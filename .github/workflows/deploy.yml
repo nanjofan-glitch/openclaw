@@ -1,4 +1,4 @@
-name: 🚀 官方适配部署
+name: 🚀 终极路径修复版
 
 on:
   workflow_dispatch: 
@@ -20,11 +20,14 @@ jobs:
           cache: 'pnpm'
 
       - name: 安装依赖
-        run: pnpm install --no-frozen-lockfile
+        # 强制进入你的子文件夹安装
+        run: cd openclaw && pnpm install --no-frozen-lockfile
 
-      - name: 执行官方部署指令
-        # 核心：使用 --prefix 指定工作目录，让 wrangler 知道去哪找 toml 文件
-        run: pnpm --filter @openclaw/worker exec wrangler deploy
+      - name: 精准进入 Worker 目录部署
+        # 这里的路径是根据你仓库真实结构写的
+        run: |
+          cd openclaw/packages/worker
+          npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
