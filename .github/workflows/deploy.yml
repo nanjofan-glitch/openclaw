@@ -1,32 +1,11 @@
-name: 🚀 终极路径修复版
+- name: 安装依赖
+        # 既然已经在仓库根目录了，直接安装
+        run: pnpm install --no-frozen-lockfile
 
-on:
-  workflow_dispatch: 
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
-
-      - name: 设置 Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.12.0
-          cache: 'pnpm'
-
-      - name: 安装依赖
-        # 强制进入你的子文件夹安装
-        run: cd openclaw && pnpm install --no-frozen-lockfile
-
-      - name: 精准进入 Worker 目录部署
-        # 这里的路径是根据你仓库真实结构写的
+      - name: 精准进入子目录部署
+        # 直接去找那个 packages 文件夹
         run: |
-          cd openclaw/packages/worker
+          cd packages/worker
           npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
