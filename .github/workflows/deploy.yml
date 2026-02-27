@@ -1,4 +1,4 @@
-name: 🚀 官方适配版部署 OpenClaw
+name: 🚀 官方适配部署
 
 on:
   workflow_dispatch: 
@@ -22,9 +22,9 @@ jobs:
       - name: 安装依赖
         run: pnpm install --no-frozen-lockfile
 
-      - name: 部署 Worker 核心
-        # 直接定位到工作区子项目进行部署
-        run: pnpm --filter @openclaw/worker run deploy
+      - name: 执行官方部署指令
+        # 核心：使用 --prefix 指定工作目录，让 wrangler 知道去哪找 toml 文件
+        run: pnpm --filter @openclaw/worker exec wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
